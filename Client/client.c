@@ -11,9 +11,7 @@
 #include <errno.h>
 
 
-int main()
-
-{
+int main() {
 
         int sock, bytes_recieved;  
         char send_data[1024],recv_data[1024];
@@ -41,7 +39,7 @@ int main()
 
         while(1)
         {
-        
+/*        
           bytes_recieved=recv(sock,recv_data,1024,0);
           recv_data[bytes_recieved] = '\0';
  
@@ -53,7 +51,7 @@ int main()
 
           else
            printf("\nRecieved data = %s " , recv_data);
-           
+*/           
            printf("\nSEND (q or Q to quit) : ");
            gets(send_data);
            
