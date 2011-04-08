@@ -31,7 +31,7 @@ int main() {
   struct sockaddr_in server_addr;		// Server socket information
   struct sockaddr_in client_addr;    		// Client socket information
   int sin_size;					// sizeof struct sockaddr_in
-  pthread_t tid[MAX_CLIENTS];			// Thread Id's for each client communication
+  pthread_t tid[2*MAX_CLIENTS];			// Thread Id's for each client communication
 
   // Specify the type of communication protocol      
   if ((sock_desc = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
@@ -67,10 +67,11 @@ int main() {
     sin_size = sizeof(struct sockaddr_in);
     connected[++cntr_connected] = accept(sock_desc, (struct sockaddr *)&client_addr, &sin_size);
     printf("Number of clients now: %d\n", cntr_connected+1);
-    pthread_create(&tid[cntr_connected], NULL, data_recieve, (void *)connected[cntr_connected]);
+    pthread_create(&tid[2*cntr_connected], NULL, data_recieve, (void *)connected[cntr_connected]);
+    pthread_create(&tid[2*cntr_connected+1], NULL, data_send, (void *)connected[cntr_connected]);
+    printf("Recieve and send threads created for client %d\n", connected[cntr_connected]);
   }       
   
-  pthread_join(tid[cntr_connected], NULL);
   int i = 0;
   for (i = 0; i < cntr_connected; i++)
     close(connected[cntr_connected]);

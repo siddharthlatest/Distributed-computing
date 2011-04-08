@@ -9,7 +9,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
-
+#include <pthread.h>
+#include "data_communication.c"
 
 int main() {
 
@@ -17,6 +18,7 @@ int main() {
         char send_data[1024],recv_data[1024];
         struct hostent *host;
         struct sockaddr_in server_addr;  
+        pthread_t send, receive;
 
         host = gethostbyname("127.0.0.1");
 
@@ -37,34 +39,9 @@ int main() {
             exit(1);
         }
 
-        while(1)
-        {
-/*        
-          bytes_recieved=recv(sock,recv_data,1024,0);
-          recv_data[bytes_recieved] = '\0';
- 
-          if (strcmp(recv_data , "q") == 0 || strcmp(recv_data , "Q") == 0)
-          {
-           close(sock);
-           break;
-          }
-
-          else
-           printf("\nRecieved data = %s " , recv_data);
-*/           
-           printf("\nSEND (q or Q to quit) : ");
-           gets(send_data);
-           
-          if (strcmp(send_data , "q") != 0 && strcmp(send_data , "Q") != 0)
-           send(sock,send_data,strlen(send_data), 0); 
-
-          else
-          {
-           send(sock,send_data,strlen(send_data), 0);   
-           close(sock);
-           break;
-          }
-        
-        }   
+           pthread_create(&send, NULL, data_send, (void *)sock);
+           pthread_create(&receive, NULL, data_receive, (void *)sock);
+      pthread_join(send, NULL);
+      pthread_join(receive, NULL);
         return 0;
 }
