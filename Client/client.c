@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
   char send_data[DATA_SIZE],recv_data[DATA_SIZE];
   struct hostent *host;
   struct sockaddr_in server_addr;  
-  pthread_t send, receive;
+  pthread_t communicate;
   if (argc == 1)   
    host = gethostbyname("127.0.0.1");
   else if (argc == 2) {
@@ -49,8 +49,7 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
-  pthread_create(&send, NULL, data_send, (void *)sock);
-  pthread_create(&receive, NULL, data_receive, (void *)sock);
-  pthread_join(send, NULL);
+  pthread_create(&communicate, NULL, data_communicate, (void *)sock);
+  pthread_join(communicate, NULL);
   return 0;
 }
