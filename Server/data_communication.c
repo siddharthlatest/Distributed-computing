@@ -8,6 +8,8 @@
 #define DATA_SIZE 1024
 
 extern int cntr_connected;
+extern int client_to_send;
+extern int connected[50];
 
 void  *data_recieve(void *connector) {
   const int true = 1;
@@ -41,14 +43,20 @@ void *data_send(void *connector) {
   char send_data[DATA_SIZE];
   const int true = 1;
   while (true) {
-    printf("Send data (q or Q to quit): \n  ");
-    fflush(stdout);
-    scanf("%[^\n]", send_data);
-    getchar();
-    send((int)connector, send_data, strlen(send_data), 0);
-    if (strcmp(send_data, "q") == 0 || strcmp(send_data, "Q") == 0) {
-      close((int)connector);
+    if (client_to_send != -1)
+      connector = (void *)connected[client_to_send];  
+      // Sets the client with whom communication must happen 
+
+    if (connector != NULL) {
+      printf("Send data (q or Q to quit): \n  ");
+      fflush(stdout);
+      scanf("%[^\n]", send_data);
+      getchar();
+      send((int)connector, send_data, strlen(send_data), 0);
+      if (strcmp(send_data, "q") == 0 || strcmp(send_data, "Q") == 0) {
+        close((int)connector);
+      }
+      send_data[0] = '\0';
     }
-    send_data[0] = '\0';
   }
 }

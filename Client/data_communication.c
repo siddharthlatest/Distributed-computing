@@ -15,15 +15,19 @@ void  *data_receive(void *sock) {
   char recv_data[DATA_SIZE];
 
   while (true) {
-    bytes_recieved=recv((int)sock,recv_data,1024,0);
+    bytes_recieved=recv((int)sock, recv_data, DATA_SIZE, 0);
     recv_data[bytes_recieved] = '\0';
  
     if (strcmp(recv_data , "q") == 0 || strcmp(recv_data , "Q") == 0) {
       close((int)sock);
       break;
     } 
-    else
-      printf("\nRecieved data = %s " , recv_data);
+    else if (recv_data[0] != '\0') {
+      printf("Recieved data = %s\n" , recv_data);
+      printf("SEND(q or Q to quit): \n  ");
+    }
+    recv_data[0] = '\0';
+    fflush(stdout);
   }
 }
 
@@ -32,7 +36,7 @@ void *data_send(void *sock) {
   const int true = 1;
 
   while (true) {
-    printf("\nSEND (q or Q to quit) : ");
+    printf("SEND (q or Q to quit) : \n  ");
     scanf("%[^\n]", send_data);
     getchar();
     fflush(stdout);

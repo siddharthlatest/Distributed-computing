@@ -12,26 +12,28 @@
 #include <errno.h>
 #include <string.h>
 #include <pthread.h>
-#include "data_recieve.c"
+#include "data_communication.c"
 
 #define MAX_CLIENTS 50				// Upper limit on the number of clients connected at the same time
 #define DATA_SIZE 1024				// Upper limit on the size of data to be sent/recieved
 
 
-int cntr_connected = -1; 			// Maintains the number of connected clients at the moment
+int cntr_connected = 0; 			// Maintains the number of connected clients at the moment
+int client_to_send = -1;
+int connected[MAX_CLIENTS] = {0};		// Client's socket descriptor array
 
 int main() {
 
   const int true = 1;				// Using "true" to enhance readability
   int sock_desc;				// Server's Socket descriptor
-  int connected[MAX_CLIENTS] = {0};		// Client's socket descriptor array
   int bytes_recieved;  				// Size of the recieved data (<= DATA_SIZE)
   char recv_data[DATA_SIZE];       		// Message to be recieved
   char send_data[DATA_SIZE];			// Message to be sent
   struct sockaddr_in server_addr;		// Server socket information
   struct sockaddr_in client_addr;    		// Client socket information
   int sin_size;					// sizeof struct sockaddr_in
-  pthread_t tid[2*MAX_CLIENTS];			// Thread Id's for each client communication
+  pthread_t tid[MAX_CLIENTS+5];			// Thread Id's for each client communication
+  pthread_t tid_send;				// Thread Id for the server send
 
   // Specify the type of communication protocol      
   if ((sock_desc = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
@@ -59,17 +61,19 @@ int main() {
     exit(1);
   }
 		
-  printf("\nTCPServer Waiting for client on port 5000");
+  printf("TCPServer Waiting for client on port 5000 ...\n");
   fflush(stdout);
 
-  while(true) {  
+  pthread_create(&tid_send, NULL, data_send, (void *)NULL); 
+  // Thread for sending data to a client
 
+  while(true) {  
     sin_size = sizeof(struct sockaddr_in);
-    connected[++cntr_connected] = accept(sock_desc, (struct sockaddr *)&client_addr, &sin_size);
-    printf("Number of clients now: %d\n", cntr_connected+1);
-    pthread_create(&tid[2*cntr_connected], NULL, data_recieve, (void *)connected[cntr_connected]);
-    pthread_create(&tid[2*cntr_connected+1], NULL, data_send, (void *)connected[cntr_connected]);
-    printf("Recieve and send threads created for client %d\n", connected[cntr_connected]);
+    connected[cntr_connected] = accept(sock_desc, (struct sockaddr *)&client_addr, &sin_size);
+    printf("--- Number of clients now: %d\n", cntr_connected+1);
+    client_to_send = cntr_connected;
+    pthread_create(&tid[cntr_connected], NULL, data_recieve, (void *)connected[cntr_connected]);
+    cntr_connected++;
   }       
   
   int i = 0;
