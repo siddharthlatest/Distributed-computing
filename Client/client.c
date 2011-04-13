@@ -15,13 +15,23 @@
 #define DATA_SIZE 1024
 #define BIND_ADDR 5000
 
-int main() {
+int main(int argc, char *argv[]) {
+
   int sock, bytes_recieved;  
   char send_data[DATA_SIZE],recv_data[DATA_SIZE];
   struct hostent *host;
   struct sockaddr_in server_addr;  
   pthread_t send, receive;
-  host = gethostbyname("127.0.0.1");
+  if (argc == 1)   
+   host = gethostbyname("127.0.0.1");
+  else if (argc == 2) {
+   printf("%s\n", argv[1]);
+   host = gethostbyname(argv[1]);
+  }
+  else {
+    printf("Usage: <name_of_program> [server_ip]\n");
+    return 1;
+  }
 
   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
     perror("Socket");
@@ -42,6 +52,5 @@ int main() {
   pthread_create(&send, NULL, data_send, (void *)sock);
   pthread_create(&receive, NULL, data_receive, (void *)sock);
   pthread_join(send, NULL);
-  pthread_join(receive, NULL);
   return 0;
 }

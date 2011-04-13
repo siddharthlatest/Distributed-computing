@@ -21,6 +21,7 @@
 int cntr_connected = 0; 			// Maintains the number of connected clients at the moment
 int client_to_send = -1;
 int connected[MAX_CLIENTS] = {0};		// Client's socket descriptor array
+int server_exit = 0;
 
 int main() {
 
@@ -68,8 +69,10 @@ int main() {
   // Thread for sending data to a client
 
   while(true) {  
+    if (server_exit == 1) // Check if the server wants to exit
+      break;
     sin_size = sizeof(struct sockaddr_in);
-    connected[cntr_connected] = accept(sock_desc, (struct sockaddr *)&client_addr, &sin_size);
+    connected[cntr_connected] = accept(sock_desc, (struct sockaddr *`)&client_addr, &sin_size);
     printf("--- Number of clients now: %d\n", cntr_connected+1);
     client_to_send = cntr_connected;
     pthread_create(&tid[cntr_connected], NULL, data_recieve, (void *)connected[cntr_connected]);
