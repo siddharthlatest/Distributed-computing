@@ -31,7 +31,7 @@ void  *data_communicate(void *sock) {
       // Perform the computation
       char value[20] = {'\0'};
       compute(start, end, value);
-      printf("Computed value: %s\n", value);
+      printf("Computed range: %d %d\n", start, end);
 
       // Send the data
       send((int)sock, value, strlen(value), 0);    

@@ -72,7 +72,7 @@ int main() {
     if (server_exit == 1) // Check if the server wants to exit
       break;
     sin_size = sizeof(struct sockaddr_in);
-    connected[cntr_connected] = accept(sock_desc, (struct sockaddr *`)&client_addr, &sin_size);
+    connected[cntr_connected] = accept(sock_desc, (struct sockaddr *)&client_addr, &sin_size);
     printf("--- Number of clients now: %d\n", cntr_connected+1);
     client_to_send = cntr_connected;
     pthread_create(&tid[cntr_connected], NULL, data_recieve, (void *)connected[cntr_connected]);
