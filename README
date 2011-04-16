@@ -1,9 +1,9 @@
 Installation instructions
 -------------------------
 
-1.) From the tar file
+1.) From the tar/zip file
 
-Step 1: Untar the Distributed...tar.gz file
+Step 1: Untar/Unzip the file
 Step 2: cd .../Distributed    // Go into the untarred directory
 Step 3: cd Server
 Step 4: gcc -pthread -o Server server.c

@@ -1,0 +1,101 @@
+Definition:-
+------------
+
+Use of Distributed computing to run a potentially parallel task with the help of several heterogenous computational resources.
+Here we simulated a computation of counting the number of digits between a range [a,b).
+
+- All the code is pretty much self-understandable and commented wherever necessary :)
+
+
+
+Sample input/output:
+-------------
+
+[The output hugely varies on the input and the number of clients. So, we fix the input range from 1 to 100 and the client connections to 5]
+
+./Server
+[Once enough clients have joined to start the computation, input a start and an end range.]
+1 100
+[Observe the output on each client's end]
+
+=> Output on server:
+
+Locked execution
+CONST = 10, i = 0
+Sending data 1 11 from 1 to 11 to client 1
+CONST = 10, i = 0
+Sending data 11 21 from 11 to 21 to client 2
+CONST = 10, i = 0
+Sending data 21 31 from 21 to 31 to client 3
+CONST = 10, i = 0
+Sending data 31 41 from 31 to 41 to client 4
+CONST = 10, i = 0
+Sending data 41 51 from 41 to 51 to client 5
+RECIEVED DATA = 10 
+RECIEVED DATA = 10 
+RECIEVED DATA = 10 
+RECIEVED DATA = 10 
+Locked execution
+CONST = 10, i = 1
+Sending data 51 61 from 51 to 61 to client 1
+CONST = 10, i = 1
+Sending data 61 71 from 61 to 71 to client 2
+CONST = 10, i = 1
+Sending data 71 81 from 71 to 81 to client 3
+CONST = 10, i = 1
+Sending data 81 91 from 81 to 91 to client 4
+CONST = 10, i = 1
+Sending data 91 101 from 91 to 101 to client 5
+Enter the start and end range: 
+  RECIEVED DATA = 10 
+RECIEVED DATA = 10 
+RECIEVED DATA = 10 
+RECIEVED DATA = 10 
+RECIEVED DATA = 10 
+RECIEVED DATA = 10 
+
+
+
+=> Output on client_1:
+Computed range: 1 11
+SENT data: 10
+Computed range: 51 61
+SENT data: 10
+
+=> Output on client_2:
+Computed range: 11 21
+SENT data: 10
+Computed range: 61 71
+SENT data: 10
+
+=> Output on client_3:
+Computed range: 21 31
+SENT data: 10
+Computed range: 71 81
+SENT data: 10
+
+=> Output on client_4:
+Computed range: 31 41
+SENT data: 10
+Computed range: 81 91
+SENT data: 10
+
+=> Output on client_5:
+Computed range: 41 51
+SENT data: 10
+Computed range: 91 101
+SENT data: 10
+
+
+Conclusion:
+------------
+
+Our aim is to show the potential of distributed computing in tasks that can be divided easily into independent sub-tasks.
+
+
+
+Group Members:
+--------------
+
+200901105 - Yash Kela 
+200901106 - Siddharth Kothari

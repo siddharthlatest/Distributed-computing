@@ -1,0 +1,10 @@
+In Server/
+  server.c
+  data_communication.c
+  Server  [executable]
+
+In Client/
+  client.c
+  data_communication.c
+  compute.c
+  Client  [executable]
