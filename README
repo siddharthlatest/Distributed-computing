@@ -1,0 +1,35 @@
+Installation instructions
+-------------------------
+
+1.) From the tar file
+
+Step 1: Untar the Distributed...tar.gz file
+Step 2: cd .../Distributed    // Go into the untarred directory
+Step 3: cd Server
+Step 4: gcc -pthread -o Server server.c
+Step 5: cd ../Client
+Step 6: gcc -pthread -lm -o Client client.c
+
+
+2.) From the git repository [Read-only access]
+
+Step 1: git clone https://sids-aquarius@github.com/sids-aquarius/Distributed-computing.git   [This will create a clone in the pwd]
+Step 2: cd Distributed-computing
+From Step 3 - Same as in 1.)
+
+To get the latest changes, use git pull
+
+
+
+Run instructions
+----------------
+
+=> Server - 
+
+Step 1.) Make sure you are in the Server directory
+Step 2.) ./Server
+
+=> Client -
+
+Step 1.) Make sure you are in the Client directory
+Step 2.) ./Client [ip address of the server]          // not necessary if on the same machine 

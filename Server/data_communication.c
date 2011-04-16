@@ -71,7 +71,7 @@ void *data_send(void *connector) {
           connector = (void *)connected[j];
           int CONST = (end+1-start)/SUBPARTS;
           printf("CONST = %d, i = %d\n", CONST, i);
-          int local_start = i*(client_to_send+1)*CONST + j*CONST;
+          int local_start = start + i*(client_to_send+1)*CONST + j*CONST;
           int local_end = local_start+CONST;
           sprintf(send_data, "%d %d", local_start, local_end);
           printf("Sending data %s from %d to %d to client %d\n", send_data, local_start, local_end, j+1);
